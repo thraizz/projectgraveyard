@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { HeartIcon } from "@heroicons/vue/20/solid";
 import { computed } from "vue";
 
 import { Project } from "@/types";
+
+import UpvoteButton from "./UpvoteButton.vue";
 
 const props = defineProps<{
   project: Project;
@@ -15,15 +16,11 @@ const firstImage = computed(() => {
 });
 
 const href = computed(() => `/projects/${props.project.projectId}`);
-
-const upvoteProject = () => {
-  console.log("Upvoted project!");
-};
 </script>
 
 <template>
-  <router-link as="li" :to="href" class="project">
-    <div class="flex min-w-0 gap-x-4">
+  <li class="project">
+    <router-link as="li" :to="href" class="flex min-w-0 gap-x-4">
       <img
         v-if="firstImage"
         class="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -47,26 +44,16 @@ const upvoteProject = () => {
           <div
             v-for="tag in project.tags"
             :key="tag"
-            class="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             {{ tag }}
           </div>
         </div>
       </div>
-    </div>
+    </router-link>
 
-    <button
-      type="button"
-      class="flex h-8 w-16 flex-row items-center justify-between self-center rounded-lg bg-indigo-100 px-2.5 py-0.5"
-      @click="upvoteProject"
-    >
-      <HeartIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-
-      <span class="text-xs font-medium text-indigo-800">
-        {{ project.upvotesCount }}
-      </span>
-    </button>
-  </router-link>
+    <UpvoteButton :project="project" />
+  </li>
 </template>
 
 <style>

@@ -17,7 +17,7 @@ export type Project = {
   tags: string[];
   images: string[]; // store links or references
   textContent: string;
-  upvotesCount: number;
+  upvotes: string[];
   comments: Comment[];
   createdAt: Date;
   updatedAt?: Date;
