@@ -1,12 +1,12 @@
 // User Type
-export interface UserType {
+export type User = {
   userId: string;
   username: string;
   email: string;
   password: string; // hashed
   profilePicture?: string;
   bio?: string;
-}
+};
 
 // Project Type
 export type Project = {
@@ -18,23 +18,23 @@ export type Project = {
   images: string[]; // store links or references
   textContent: string;
   upvotesCount: number;
-  comments: CommentType[];
+  comments: Comment[];
   createdAt: Date;
   updatedAt?: Date;
 };
 
 // Comment Type
-export interface CommentType {
+export type Comment = {
   commentId: string;
   userId: string; // author's user ID
   projectId: string; // associated project ID
   textContent: string;
   timestamp: Date;
-}
+};
 
 // Database Collections
 export interface DatabaseCollections {
-  users: Record<string, UserType>;
-  projects: Record<string, ProjectType>;
-  comments: Record<string, CommentType>;
+  users: Record<string, User>;
+  projects: Record<string, Project>;
+  comments: Record<string, Comment>;
 }
