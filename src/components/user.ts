@@ -41,3 +41,8 @@ export const logInWithFirebase: (
     return Promise.reject(error);
   }
 };
+
+export const signOut = async () => {
+  const auth = getAuth(app);
+  await auth.signOut();
+};

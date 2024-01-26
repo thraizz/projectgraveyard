@@ -2,7 +2,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { BellIcon, UserCircleIcon } from "@heroicons/vue/20/solid";
 
-import { userNavigation, useUser } from "./user";
+import { signOut, userNavigation, useUser } from "./user";
 const { user, isLoggedIn } = useUser();
 </script>
 
@@ -69,6 +69,20 @@ const { user, isLoggedIn } = useUser();
                 ]"
                 >{{ item.name }}</a
               >
+            </MenuItem>
+
+            <MenuItem v-slot="{ active }">
+              <button
+                type="button"
+                class="w-full text-left"
+                :class="[
+                  active ? 'bg-gray-100' : '',
+                  'block px-4 py-2 text-sm text-gray-700',
+                ]"
+                @click="signOut"
+              >
+                Sign out
+              </button>
             </MenuItem>
           </MenuItems>
         </transition>

@@ -2,19 +2,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/vue/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { getAuth } from "firebase/auth";
 
-import { app } from "@/firebase";
-
-import { userNavigation, useUser } from "./user";
+import { signOut, userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
 const { user } = useUser();
-
-const signOut = async () => {
-  const auth = getAuth(app);
-  await auth.signOut();
-};
 </script>
 
 <template>
@@ -27,7 +19,7 @@ const signOut = async () => {
       <div
         class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25"
       >
-        <router-link to="/" class="flex items-center px-2 lg:px-0">
+        <router-link to="/" class="flex items-center gap-2 px-2 lg:px-0">
           <div class="flex-shrink-0">
             <img class="block h-8 w-8" src="/icon.svg" alt="Your Company" />
           </div>
