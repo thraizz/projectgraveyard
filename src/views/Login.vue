@@ -1,3 +1,63 @@
+<script setup lang="ts">
+import { useField, useForm } from "vee-validate";
+import { watch } from "vue";
+import { useRouter } from "vue-router";
+import { string } from "yup";
+
+import { logInWithFirebase, useUser } from "@/components/user";
+const router = useRouter();
+
+type FormData = {
+  email: string;
+  password: string;
+};
+const { handleSubmit, resetForm, setErrors } = useForm<FormData>({
+  validationSchema: {
+    email: string().required().email(),
+    password: string().required().min(6),
+  },
+  initialValues: {
+    email: "",
+    password: "",
+  },
+});
+const onSubmit = handleSubmit(
+  // Success
+  (values: FormData) => {
+    // handle form submission here
+    logInWithFirebase(values.email, values.password)
+      .then(() => {
+        resetForm();
+        router.push("/");
+      })
+      .catch(() => {
+        setErrors({
+          email: "Invalid email or password.",
+          password: "Invalid email or password.",
+        });
+      });
+  },
+  // Failure
+  (errors) => {
+    console.log(errors);
+  },
+);
+
+const { value: email, errorMessage: emailError } = useField("email");
+const { value: password, errorMessage: passwordError } = useField("password");
+
+const { isLoggedIn } = useUser();
+
+watch(
+  () => isLoggedIn.value,
+  (isLoggedIn) => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  },
+);
+</script>
+
 <template>
   <div
     class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
@@ -13,7 +73,7 @@
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
+      <form class="space-y-6" @submit="onSubmit">
         <div>
           <label
             for="email"
@@ -21,16 +81,17 @@
             >Email address</label
           >
 
-          <div class="mt-2">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required=""
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
+          <input
+            id="email"
+            v-model="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+
+          <p v-if="emailError" class="error">{{ emailError }}</p>
         </div>
 
         <div>
@@ -50,16 +111,17 @@
             </div>
           </div>
 
-          <div class="mt-2">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required=""
-              class="input"
-            />
-          </div>
+          <input
+            id="password"
+            v-model="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="input"
+          />
+
+          <p v-if="passwordError" class="error">{{ passwordError }}</p>
         </div>
 
         <div class="flex flex-col gap-2">

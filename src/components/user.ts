@@ -1,4 +1,9 @@
-import { getAuth, User } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  User,
+  UserCredential,
+} from "firebase/auth";
 import { ref } from "vue";
 
 import { app } from "@/firebase";
@@ -23,4 +28,16 @@ export const useUser = () => {
     user,
     isLoggedIn,
   };
+};
+
+export const logInWithFirebase: (
+  email: string,
+  password: string,
+) => Promise<void | UserCredential> = async (email, password) => {
+  const auth = getAuth(app);
+  try {
+    return signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };

@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { Form, useField, useForm } from "vee-validate";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useField, useForm } from "vee-validate";
+import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { string } from "yup";
 
+import { logInWithFirebase, useUser } from "@/components/user";
 import { app } from "@/firebase";
-
-const {
-  values: formData,
-  validate,
-  resetForm,
-  handleSubmit,
-} = useForm({
+type FormData = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+const { handleSubmit, resetForm, setErrors } = useForm<FormData>({
   validationSchema: {
     email: string().required().email(),
     password: string().required().min(6),
@@ -29,32 +26,45 @@ const {
 });
 
 const router = useRouter();
-const logInWithFirebase = async (email: string, password: string) => {
-  const auth = getAuth(app);
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    await signInWithEmailAndPassword(auth, email, password);
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const onSubmit = handleSubmit(async () => {
-  const isValid = await validate();
-
-  if (isValid) {
-    // handle form submission here
-    logInWithFirebase(formData.email, formData.password);
-    resetForm();
-  }
-});
+const onSubmit = handleSubmit(
+  // Success
+  (values: FormData) => {
+    const auth = getAuth(app);
+    createUserWithEmailAndPassword(auth, values.email, values.password)
+      .then(() => {
+        logInWithFirebase(values.email, values.password);
+        resetForm();
+        router.push("/");
+      })
+      .catch(() => {
+        setErrors({
+          email: "Invalid email or password.",
+          password: "Invalid email or password.",
+        });
+      });
+  },
+  // Failure
+  (errors) => {
+    console.log(errors);
+  },
+);
 
 const { value: email, errorMessage: emailError } = useField<string>("email");
 const { value: password, errorMessage: passwordError } =
   useField<string>("password");
 const { value: confirmPassword, errorMessage: confirmPasswordError } =
   useField("confirmPassword");
+
+const { isLoggedIn } = useUser();
+
+watch(
+  () => isLoggedIn,
+  (isLoggedIn) => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  },
+);
 </script>
 
 <template>
@@ -72,7 +82,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <Form class="space-y-6" @submit="onSubmit">
+      <form class="space-y-6" @submit="onSubmit">
         <div>
           <label
             for="email"
@@ -148,7 +158,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
             Sign In
           </router-link>
         </div>
-      </Form>
+      </form>
     </div>
   </div>
 </template>
