@@ -12,6 +12,7 @@ const firebaseConfig = {
   storageBucket: "oldprojectshowcaser.appspot.com",
   messagingSenderId: "236463367771",
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: "G-7NMKG60ZCE",
 };
 
 // Initialize Firebase
