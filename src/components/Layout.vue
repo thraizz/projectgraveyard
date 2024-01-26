@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import MobileUserMenu from "@/components/MobileUserMenu.vue";
-
-import { useUser } from "./user";
-const { user } = useUser();
+import TopBar from "@/components/TopBar.vue";
 </script>
 
 <template>
   <div class="min-h-full">
     <div class="bg-indigo-600 pb-32">
-      <MobileUserMenu v-if="user" :user="user" />
+      <TopBar />
 
       <header class="py-10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

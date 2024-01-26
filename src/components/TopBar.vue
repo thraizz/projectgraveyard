@@ -2,14 +2,19 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/vue/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-import { userNavigation } from "./user";
+import { app } from "@/firebase";
+
+import { userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
-defineProps<{
-  user: User;
-}>();
+const { user } = useUser();
+
+const signOut = async () => {
+  const auth = getAuth(app);
+  await auth.signOut();
+};
 </script>
 
 <template>
@@ -93,11 +98,11 @@ defineProps<{
 
           <div class="ml-3">
             <div class="text-base font-medium text-white">
-              {{ user.displayName }}
+              {{ user?.displayName }}
             </div>
 
             <div class="text-sm font-medium text-indigo-300">
-              {{ user.email }}
+              {{ user?.email }}
             </div>
           </div>
 
