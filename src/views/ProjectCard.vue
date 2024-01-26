@@ -31,14 +31,27 @@ const upvoteProject = () => {
         alt=""
       />
 
-      <div class="min-w-0 flex-auto">
-        <p class="text-sm font-semibold leading-6 text-gray-900">
-          {{ project.title }}
-        </p>
+      <div class="flex h-full min-w-0 flex-auto flex-col">
+        <div>
+          <p class="text-md font-semibold leading-6 text-gray-900">
+            {{ project.title }}
+          </p>
 
-        <p>
-          {{ project.description }}
-        </p>
+          <p class="text-sm font-normal leading-6 text-gray-900">
+            {{ project.description }}
+          </p>
+        </div>
+
+        <!-- Show tags -->
+        <div class="mt-auto flex flex-row gap-1">
+          <div
+            v-for="tag in project.tags"
+            :key="tag"
+            class="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            {{ tag }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -58,6 +71,6 @@ const upvoteProject = () => {
 
 <style>
 .project {
-  @apply relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 lg:px-8;
+  @apply relative flex min-h-40 justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 lg:px-8;
 }
 </style>
