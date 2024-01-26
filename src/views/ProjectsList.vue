@@ -14,7 +14,7 @@ onMounted(async () => {
   projects.value = querySnapshot.docs.map(
     (doc) =>
       ({
-        projectId: doc.id,
+        _id: doc.id,
         ...doc.data(),
       }) as Project,
   );

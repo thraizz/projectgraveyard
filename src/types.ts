@@ -10,6 +10,7 @@ export type User = {
 
 // Project Type
 export type Project = {
+  _id: string;
   projectId: string;
   userId: string; // owner's user ID
   title: string;

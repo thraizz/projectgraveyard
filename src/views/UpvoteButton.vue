@@ -11,10 +11,12 @@ const props = defineProps<{
 }>();
 const { user } = useUser();
 const upvoteProject = () => {
-  setDoc(doc(db, `projects/${props.project.projectId}`), {
+  setDoc(doc(db, `projects/${props.project._id}`), {
     ...props.project,
     upvotes: user.value
-      ? [...props.project.upvotes, user.value.uid]
+      ? props.project.upvotes.includes(user.value.uid)
+        ? props.project.upvotes.filter((uid) => uid !== user.value?.uid)
+        : [...props.project.upvotes, user.value.uid]
       : props.project.upvotes,
   })
     .then(() => {
