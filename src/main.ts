@@ -14,14 +14,31 @@ const router = createRouter({
       components: {
         default: HomeVue,
       },
+      meta: {
+        title: "Home",
+      },
     },
     {
       path: "/login",
       component: () => import("./views/Login.vue"),
+      meta: {
+        title: "Login",
+      },
     },
     {
       path: "/register",
       component: () => import("./views/Registration.vue"),
+      meta: {
+        title: "Registration",
+      },
+    },
+    {
+      path: "/projects/:id",
+      component: () => import("./views/Project.vue"),
+      meta: {
+        title: "Project",
+        showBack: true,
+      },
     },
   ],
 });

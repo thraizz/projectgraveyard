@@ -27,7 +27,7 @@ const signOut = async () => {
       <div
         class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25"
       >
-        <div class="flex items-center px-2 lg:px-0">
+        <router-link to="/" class="flex items-center px-2 lg:px-0">
           <div class="flex-shrink-0">
             <img class="block h-8 w-8" src="/icon.svg" alt="Your Company" />
           </div>
@@ -35,7 +35,7 @@ const signOut = async () => {
           <span class="font-sans text-xl font-bold text-white">
             Project Graveyard
           </span>
-        </div>
+        </router-link>
 
         <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
           <div class="w-full max-w-lg lg:max-w-xs">
