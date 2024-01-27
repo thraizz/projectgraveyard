@@ -19,18 +19,21 @@ export type Project = {
   images: string[]; // store links or references
   textContent: string;
   upvotes: string[];
-  comments: Comment[];
   createdAt: Date;
   updatedAt?: Date;
+  links?: string[];
+  logo: string;
 };
 
 // Comment Type
 export type Comment = {
+  _id: string;
   commentId: string;
   userId: string; // author's user ID
   projectId: string; // associated project ID
   textContent: string;
   timestamp: Date;
+  upvotes: string[];
 };
 
 // Database Collections

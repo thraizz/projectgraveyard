@@ -9,12 +9,6 @@ const props = defineProps<{
   project: Project;
 }>();
 
-const firstImage = computed(() => {
-  const images = props.project.images;
-
-  return images[0];
-});
-
 const href = computed(() => `/projects/${props.project.projectId}`);
 </script>
 
@@ -22,11 +16,13 @@ const href = computed(() => `/projects/${props.project.projectId}`);
   <li class="project">
     <router-link as="li" :to="href" class="flex min-w-0 gap-x-4">
       <img
-        v-if="firstImage"
+        v-if="project.logo"
         class="h-12 w-12 flex-none rounded-full bg-gray-50"
-        :src="firstImage"
+        :src="project.logo"
         alt=""
       />
+
+      <div v-else class="h-12 w-12 flex-none" />
 
       <div class="flex h-full min-w-0 flex-auto flex-col">
         <div>
