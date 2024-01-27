@@ -29,28 +29,6 @@ const { user } = useUser();
           </span>
         </router-link>
 
-        <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
-          <div class="w-full max-w-lg lg:max-w-xs">
-            <label for="search" class="sr-only">Search</label>
-
-            <div class="relative text-gray-400 focus-within:text-gray-600">
-              <div
-                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-              >
-                <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-              </div>
-
-              <input
-                id="search"
-                class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Search"
-                type="search"
-                name="search"
-              />
-            </div>
-          </div>
-        </div>
-
         <div class="flex lg:hidden">
           <!-- Mobile menu button -->
           <DisclosureButton
@@ -64,6 +42,26 @@ const { user } = useUser();
 
             <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
           </DisclosureButton>
+        </div>
+
+        <div class="flex max-w-52 flex-1 justify-start px-2 lg:ml-6">
+          <label for="search" class="sr-only">Search</label>
+
+          <div class="relative text-gray-400 focus-within:text-gray-600">
+            <div
+              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+            >
+              <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+            </div>
+
+            <input
+              id="search"
+              class="search-input"
+              placeholder="Search"
+              type="search"
+              name="search"
+            />
+          </div>
         </div>
 
         <UserMenu />
@@ -116,12 +114,12 @@ const { user } = useUser();
             :key="item.name"
             as="a"
             :href="item.href"
-            class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75"
+            class="navigation-item"
             >{{ item.name }}</DisclosureButton
           >
 
           <DisclosureButton
-            class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75"
+            class="navigation-item min-w-full text-left"
             @click="signOut"
             >Sign out</DisclosureButton
           >
@@ -130,3 +128,16 @@ const { user } = useUser();
     </DisclosurePanel>
   </Disclosure>
 </template>
+
+<style>
+.navigation-item {
+  @apply block rounded-md px-3 py-2 text-base font-light text-white hover:bg-indigo-500 hover:bg-opacity-75;
+}
+.search-input {
+  @apply block h-fit w-0 rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:w-full focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 sm:text-sm sm:leading-6 lg:w-full;
+
+  transition-property: width, padding;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+</style>

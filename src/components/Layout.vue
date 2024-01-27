@@ -10,7 +10,7 @@ import TopBar from "@/components/TopBar.vue";
       <TopBar />
 
       <header
-        class="flex w-full flex-row justify-between px-4 py-10 sm:px-6 lg:px-8"
+        class="mx-auto flex w-full max-w-7xl flex-row justify-between px-4 py-10 sm:px-6 lg:px-8"
       >
         <div class="h-20 max-w-7xl">
           <h1 class="text-3xl font-bold tracking-tight text-white">
@@ -28,7 +28,7 @@ import TopBar from "@/components/TopBar.vue";
 
         <router-link
           to="/projects/new"
-          class="button secondary block h-min w-min"
+          class="button secondary hidden h-min w-min lg:flex"
         >
           Post Project
         </router-link>
@@ -44,3 +44,5 @@ import TopBar from "@/components/TopBar.vue";
     </main>
   </div>
 </template>
+
+<style>
