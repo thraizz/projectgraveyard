@@ -30,7 +30,8 @@ import TopBar from "@/components/TopBar.vue";
           to="/projects/new"
           class="button secondary hidden h-min w-min lg:flex"
         >
-          Post Project
+          Bury your Project
+          <span class="ml-2">🪦</span>
         </router-link>
       </header>
     </div>

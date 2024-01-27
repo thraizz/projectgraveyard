@@ -38,7 +38,7 @@ const router = createRouter({
       path: "/projects/new",
       component: () => import("./views/NewProject.vue"),
       meta: {
-        title: "Post Project",
+        title: "Bury A Project",
         showBack: true,
       },
     },

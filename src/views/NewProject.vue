@@ -16,11 +16,29 @@ export type ProjectCreationFormData = {
 
 const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
   validationSchema: {
-    title: string().required(),
-    description: string().required(),
-    content: string().required(),
-    links: string().required(),
-    tags: string().required(),
+    title: string().required("The title is required."),
+    description: string().required("The description is required."),
+    content: string().required("The content is required."),
+    links: string().test(
+      "links",
+      "The links must be a comma-separated list of links.",
+      (value) => {
+        if (!value) return true;
+
+        const links = value.split(",").map((link) => link.trim());
+
+        return links.every((link) => {
+          try {
+            new URL(link);
+
+            return true;
+          } catch {
+            return false;
+          }
+        });
+      },
+    ),
+    tags: string().required("The tags are required."),
   },
   initialValues: {
     title: "",
@@ -65,11 +83,11 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
       <div>
         <div>
           <h3 class="text-lg font-medium leading-6 text-gray-900">
-            New Project
+            Describe your Project
           </h3>
 
           <p class="mt-1 max-w-2xl text-sm text-gray-500">
-            Please fill in the form below to add a new project.
+            Describe your project. What made it great? What did you learn?
           </p>
         </div>
 
@@ -106,7 +124,7 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
               for="description"
               class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
             >
-              Description
+              Short Description
             </label>
 
             <div class="mt-1 sm:col-span-2 sm:mt-0">
@@ -115,7 +133,7 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
                 v-model="description"
                 name="description"
                 rows="3"
-                placeholder="A short description of your project"
+                placeholder="Short summary of your project"
                 class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               ></textarea>
 
@@ -139,7 +157,7 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
                 v-model="content"
                 name="content"
                 rows="3"
-                placeholder="A longer description of your project"
+                placeholder="A longer description. Add struggles, successes, and lessons learned here, we're excited to hear about it!"
                 class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               ></textarea>
 
@@ -154,7 +172,7 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
               for="links"
               class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
             >
-              Links
+              Links <span class="text-xs text-gray-400">(optional)</span>
             </label>
 
             <div class="mt-1 sm:col-span-2 sm:mt-0">
