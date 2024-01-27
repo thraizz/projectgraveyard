@@ -26,8 +26,8 @@ const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
     title: "",
     description: "",
     content: "",
-    links: [],
-    tags: [],
+    links: "",
+    tags: "",
   },
 });
 

@@ -44,5 +44,3 @@ import TopBar from "@/components/TopBar.vue";
     </main>
   </div>
 </template>
-
-<style>
