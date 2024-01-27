@@ -3,12 +3,15 @@ import { useField, useForm } from "vee-validate";
 import { string } from "yup";
 
 import { useCommentStore } from "@/comments";
+import { useUser } from "@/components/user";
 
 const commentStore = useCommentStore();
 
 const props = defineProps<{
   projectUid: string;
 }>();
+
+const { user } = useUser();
 type FormData = {
   comment: string;
 };
@@ -23,8 +26,13 @@ const { handleSubmit } = useForm<FormData>({
 const onSubmit = handleSubmit(
   // Success
   (values: FormData) => {
+    if (!user.value) return;
     // handle form submission here
-    commentStore.addCommentToProject(values.comment, props.projectUid);
+    commentStore.addCommentToProject(
+      values.comment,
+      props.projectUid,
+      user.value.uid,
+    );
   },
   // Failure
   (errors) => {
