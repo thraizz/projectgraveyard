@@ -35,6 +35,14 @@ const router = createRouter({
       },
     },
     {
+      path: "/projects/new",
+      component: () => import("./views/NewProject.vue"),
+      meta: {
+        title: "Post Project",
+        showBack: true,
+      },
+    },
+    {
       path: "/projects/:id",
       component: () => import("./views/Project.vue"),
       meta: {

@@ -9,8 +9,10 @@ import TopBar from "@/components/TopBar.vue";
     <div class="bg-indigo-600 pb-32">
       <TopBar />
 
-      <header class="py-10">
-        <div class="mx-auto h-20 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <header
+        class="flex w-full flex-row justify-between px-4 py-10 sm:px-6 lg:px-8"
+      >
+        <div class="h-20 max-w-7xl">
           <h1 class="text-3xl font-bold tracking-tight text-white">
             {{ $route.meta.title }}
           </h1>
@@ -23,6 +25,13 @@ import TopBar from "@/components/TopBar.vue";
             <ArrowLeftIcon class="size-4" /> Back
           </router-link>
         </div>
+
+        <router-link
+          to="/projects/new"
+          class="button secondary block h-min w-min"
+        >
+          Post Project
+        </router-link>
       </header>
     </div>
 

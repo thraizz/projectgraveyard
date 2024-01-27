@@ -1,9 +1,10 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { firestore } from "./firebase";
 import { Project } from "./types";
+import { ProjectCreationFormData } from "./views/NewProject.vue";
 
 export const useProjectStore = defineStore("projects", () => {
   const projects = ref<Project[]>([]);
@@ -58,9 +59,33 @@ export const useProjectStore = defineStore("projects", () => {
       });
   }
 
+  function addProject(values: ProjectCreationFormData, userUid: string) {
+    const projectCollection = collection(firestore, "projects");
+    addDoc(projectCollection, {
+      title: values.title,
+      description: values.description,
+      textContent: values.content,
+      links: values.links,
+      tags: values.tags,
+      projectId: "",
+      userId: userUid,
+      images: [],
+      upvotes: [],
+      createdAt: new Date(),
+      logo: "",
+    })
+      .then(() => {
+        refetch();
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  }
+
   return {
     projects,
     refetch,
     upvoteProject,
+    addProject,
   };
 });

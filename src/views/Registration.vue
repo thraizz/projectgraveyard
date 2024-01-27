@@ -152,9 +152,9 @@ watch(
         </div>
 
         <div class="flex flex-col gap-2">
-          <button type="submit" class="button primary">Register</button>
+          <button type="submit" class="button primary w-full">Register</button>
 
-          <router-link to="/login" class="button outlined">
+          <router-link to="/login" class="button outlined w-full">
             Sign In
           </router-link>
         </div>
