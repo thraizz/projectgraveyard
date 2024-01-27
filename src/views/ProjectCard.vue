@@ -36,11 +36,11 @@ const href = computed(() => `/projects/${props.project.projectId}`);
         </div>
 
         <!-- Show tags -->
-        <div class="mt-auto flex flex-row gap-1">
+        <div class="mt-auto flex flex-row flex-wrap gap-1">
           <div
             v-for="tag in project.tags"
             :key="tag"
-            class="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="whitespace-nowrap rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm hover:bg-indigo-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             {{ tag }}
           </div>

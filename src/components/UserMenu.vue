@@ -93,7 +93,7 @@ const { user, isLoggedIn } = useUser();
   <div v-else>
     <router-link
       to="/login"
-      class="text-base font-medium text-white hover:text-indigo-50"
+      class="whitespace-nowrap text-base font-medium text-white hover:text-indigo-50"
       >Sign in</router-link
     >
   </div>
