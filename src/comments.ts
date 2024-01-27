@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -39,6 +39,36 @@ export const useCommentStore = defineStore("comments", () => {
     return comments.value.filter((comment) => comment.projectId === projectUid);
   };
 
+  const addCommentToProject = (
+    comment: string,
+    projectUid: string,
+    userUid: string,
+  ) => {
+    const commentData = {
+      userId: userUid,
+      projectId: projectUid,
+      textContent: comment,
+      timestamp: new Date(),
+      upvotes: [],
+    };
+
+    const commentCollection = collection(firestore, "comments");
+    addDoc(commentCollection, {
+      ...commentData,
+      timestamp: commentData.timestamp.toISOString(),
+    })
+      .then((data) => {
+        console.log(data);
+        comments.value = [
+          ...comments.value,
+          { ...commentData, _id: data.id } as Comment,
+        ];
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  };
+
   // function upvoteProject(_id: string, uid?: string) {
   //   const project = comments.value.find((p) => p._id === _id);
   //   if (!project) return;
@@ -66,5 +96,6 @@ export const useCommentStore = defineStore("comments", () => {
     projects: comments,
     refetch,
     getCommentsByProjectUid,
+    addCommentToProject,
   };
 });

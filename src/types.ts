@@ -28,7 +28,6 @@ export type Project = {
 // Comment Type
 export type Comment = {
   _id: string;
-  commentId: string;
   userId: string; // author's user ID
   projectId: string; // associated project ID
   textContent: string;

@@ -26,7 +26,7 @@ const { handleSubmit } = useForm<FormData>({
 const onSubmit = handleSubmit(
   // Success
   (values: FormData) => {
-    if (!user.value) return;
+    if (!user.value?.uid) return;
     // handle form submission here
     commentStore.addCommentToProject(
       values.comment,
@@ -45,12 +45,15 @@ const { value: comment, errorMessage: commentError } =
 </script>
 
 <template>
-  <div class="mt-6 flex gap-x-3">
+  <div v-if="user?.uid" class="mt-6 flex gap-x-3">
     <img
-      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+      v-if="user?.photoURL && user.photoURL !== ''"
+      :src="user.photoURL"
       alt=""
       class="h-6 w-6 flex-none rounded-full bg-gray-50"
     />
+
+    <div v-else class="h-6 w-6 flex-none" />
 
     <div class="w-full">
       <form class="relative flex-auto" @submit="onSubmit">
