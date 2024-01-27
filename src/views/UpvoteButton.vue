@@ -1,31 +1,15 @@
 <script setup lang="ts">
 import { HeartIcon } from "@heroicons/vue/20/solid";
-import { doc, setDoc } from "firebase/firestore";
 
 import { useUser } from "@/components/user";
-import { db } from "@/firebase";
+import { useProjectStore } from "@/projects";
 import { Project } from "@/types";
 
-const props = defineProps<{
+defineProps<{
   project: Project;
 }>();
 const { user } = useUser();
-const upvoteProject = () => {
-  setDoc(doc(db, `projects/${props.project._id}`), {
-    ...props.project,
-    upvotes: user.value
-      ? props.project.upvotes.includes(user.value.uid)
-        ? props.project.upvotes.filter((uid) => uid !== user.value?.uid)
-        : [...props.project.upvotes, user.value.uid]
-      : props.project.upvotes,
-  })
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-};
+const store = useProjectStore();
 </script>
 
 <template>
@@ -37,7 +21,8 @@ const upvoteProject = () => {
         ? 'bg-indigo-200'
         : 'bg-indigo-100',
     ]"
-    @click="upvoteProject"
+    :disabled="!user || user.isAnonymous"
+    @click="store.upvoteProject(project._id, user?.uid)"
   >
     <HeartIcon
       class="size-5"

@@ -1,31 +1,16 @@
 <script setup lang="ts">
-import { collection, getDocs } from "firebase/firestore";
-import { onMounted, ref } from "vue";
-
-import { db } from "@/firebase";
-import { Project } from "@/types";
+import { useProjectStore } from "@/projects";
 
 import ProjectCard from "./ProjectCard.vue";
 
-const projects = ref<any[]>([]);
-
-onMounted(async () => {
-  const querySnapshot = await getDocs(collection(db, "projects"));
-  projects.value = querySnapshot.docs.map(
-    (doc) =>
-      ({
-        _id: doc.id,
-        ...doc.data(),
-      }) as Project,
-  );
-});
+const store = useProjectStore();
 </script>
 
 <template>
   <ul role="list" class="w-full divide-y divide-gray-100">
     <ProjectCard
-      v-for="project in projects"
-      :key="project"
+      v-for="project in store.projects"
+      :key="project._id"
       :project="project"
     />
   </ul>
