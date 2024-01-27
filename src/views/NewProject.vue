@@ -10,8 +10,8 @@ export type ProjectCreationFormData = {
   title: string;
   description: string;
   content: string;
-  links: string[];
-  tags: string[];
+  links: string;
+  tags: string;
 };
 
 const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
