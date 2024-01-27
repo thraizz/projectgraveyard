@@ -29,42 +29,48 @@ const { user } = useUser();
           </span>
         </router-link>
 
-        <div class="flex lg:hidden">
-          <!-- Mobile menu button -->
-          <DisclosureButton
-            class="relative inline-flex items-center justify-center rounded-md bg-indigo-600 p-2 text-indigo-200 hover:bg-indigo-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
-          >
-            <span class="absolute -inset-0.5" />
+        <div class="flex flex-row items-center gap-4">
+          <div class="flex w-full max-w-52 flex-1 justify-start px-2 lg:ml-6">
+            <label for="search" class="sr-only">Search</label>
 
-            <span class="sr-only">Open main menu</span>
+            <div class="relative text-gray-400 focus-within:text-gray-600">
+              <div
+                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+              >
+                <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+              </div>
 
-            <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-
-            <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
-          </DisclosureButton>
-        </div>
-
-        <div class="flex max-w-52 flex-1 justify-start px-2 lg:ml-6">
-          <label for="search" class="sr-only">Search</label>
-
-          <div class="relative text-gray-400 focus-within:text-gray-600">
-            <div
-              class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-            >
-              <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+              <input
+                id="search"
+                class="search-input"
+                placeholder="Search"
+                type="search"
+                name="search"
+              />
             </div>
+          </div>
 
-            <input
-              id="search"
-              class="search-input"
-              placeholder="Search"
-              type="search"
-              name="search"
-            />
+          <UserMenu />
+
+          <div class="flex lg:hidden">
+            <!-- Mobile menu button -->
+            <DisclosureButton
+              class="relative inline-flex items-center justify-center rounded-md bg-indigo-600 p-2 text-indigo-200 hover:bg-indigo-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
+            >
+              <span class="absolute -inset-0.5" />
+
+              <span class="sr-only">Open main menu</span>
+
+              <Bars3Icon
+                v-if="!open"
+                class="block h-6 w-6"
+                aria-hidden="true"
+              />
+
+              <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+            </DisclosureButton>
           </div>
         </div>
-
-        <UserMenu />
       </div>
     </div>
 

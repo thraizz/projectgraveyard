@@ -14,7 +14,7 @@ const href = computed(() => `/projects/${props.project.projectId}`);
 
 <template>
   <li class="project">
-    <router-link as="li" :to="href" class="flex min-w-0 gap-x-4">
+    <router-link as="li" :to="href" class="flex w-full min-w-0 gap-x-4">
       <img
         v-if="project.logo"
         class="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -25,15 +25,17 @@ const href = computed(() => `/projects/${props.project.projectId}`);
       <div v-else class="h-12 w-12 flex-none" />
 
       <div class="flex h-full min-w-0 flex-auto flex-col">
-        <div>
+        <div class="flex w-full flex-row items-center justify-between">
           <p class="text-md font-semibold leading-6 text-gray-900">
             {{ project.title }}
           </p>
 
-          <p class="text-sm font-normal leading-6 text-gray-900">
-            {{ project.description }}
-          </p>
+          <UpvoteButton :project="project" />
         </div>
+
+        <p class="text-sm font-normal leading-6 text-gray-900">
+          {{ project.description }}
+        </p>
 
         <!-- Show tags -->
         <div class="mt-auto flex flex-row flex-wrap gap-1">
@@ -47,8 +49,6 @@ const href = computed(() => `/projects/${props.project.projectId}`);
         </div>
       </div>
     </router-link>
-
-    <UpvoteButton :project="project" />
   </li>
 </template>
 
