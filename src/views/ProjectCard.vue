@@ -35,8 +35,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <li class="project">
-    <router-link as="li" :to="href" class="flex w-full min-w-0 gap-x-4">
+  <div class="flex flex-col p-4 md:flex-row">
+    <router-link as="li" :to="href" class="project flex w-full min-w-0 gap-x-4">
       <img
         v-if="imgSrc"
         class="h-12 w-12 flex-none rounded-full bg-gray-50"
@@ -51,8 +51,6 @@ onMounted(async () => {
           <p class="text-md font-semibold leading-6 text-gray-900">
             {{ project.title }}
           </p>
-
-          <UpvoteButton :project="project" />
         </div>
 
         <p class="text-sm font-normal leading-6 text-gray-900">
@@ -71,7 +69,15 @@ onMounted(async () => {
         </div>
       </div>
     </router-link>
-  </li>
+
+    <div class="flex gap-2 self-end md:self-center">
+      <UpvoteButton :project="project" />
+
+      <RouterLink :to="href" class="button primary md:hidden">
+        View
+      </RouterLink>
+    </div>
+  </div>
 </template>
 
 <style>
