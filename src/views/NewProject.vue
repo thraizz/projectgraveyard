@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import { useField, useForm } from "vee-validate";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { string } from "yup";
 
@@ -98,6 +98,14 @@ const uploadScreenshots = async (uuid: string) => {
 const router = useRouter();
 const projectStore = useProjectStore();
 const { user } = useUser();
+
+watch(
+  () => user.value,
+  (user) => {
+    if (!user) router.push("/login");
+  },
+  { immediate: true },
+);
 
 const onSubmit = handleSubmit(
   // Success
