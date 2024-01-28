@@ -14,13 +14,15 @@ export const useProjectStore = defineStore("projects", () => {
 
     return getDocs(projectsCollection)
       .then((querySnapshot) => {
-        return querySnapshot.docs.map(
-          (doc) =>
-            ({
-              _id: doc.id,
-              ...doc.data(),
-            }) as Project,
-        );
+        return querySnapshot.docs
+          .map(
+            (doc) =>
+              ({
+                _id: doc.id,
+                ...doc.data(),
+              }) as Project,
+          )
+          .sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
