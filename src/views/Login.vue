@@ -49,7 +49,7 @@ const { value: password, errorMessage: passwordError } = useField("password");
 const { isLoggedIn } = useUser();
 
 watch(
-  () => isLoggedIn.value,
+  () => isLoggedIn,
   (isLoggedIn) => {
     if (isLoggedIn) {
       router.push("/");
