@@ -19,6 +19,8 @@ export type ProjectCreationFormData = {
 
 const storage = getStorage();
 
+const isSubmitting = true;
+const isValidating = true;
 const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
   validationSchema: {
     title: string().required("The title is required."),
@@ -97,23 +99,27 @@ const uploadScreenshots = async (uuid: string) => {
 
 const router = useRouter();
 const projectStore = useProjectStore();
-const { user } = useUser();
+const userStore = useUser();
 
+if (!userStore.isLoggedIn) {
+  router.push("/");
+}
 watch(
-  () => user.value,
-  (user) => {
-    if (!user) router.push("/login");
+  () => userStore.isLoggedIn,
+  (isLoggedIn) => {
+    if (!isLoggedIn) {
+      router.push("/");
+    }
   },
-  { immediate: true },
 );
 
 const onSubmit = handleSubmit(
   // Success
   async (values: ProjectCreationFormData) => {
-    if (!user.value) return;
+    if (!userStore.user) return;
 
     // handle form submission here
-    projectStore.addProject(values, user.value.uid).then(async (uid) => {
+    projectStore.addProject(values, userStore.user.uid).then(async (uid) => {
       await uploadLogo(uid);
       await uploadScreenshots(uid);
 
@@ -137,6 +143,7 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
 </script>
 
 <template>
+  {{ userStore.isLoggedIn }}
   <form class="space-y-8 divide-y divide-gray-200" @submit="onSubmit">
     <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
       <div>
@@ -336,7 +343,14 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
           Reset
         </button>
 
-        <button type="submit" class="button primary min-w-20">Submit</button>
+        <button
+          type="submit"
+          class="button min-w-20"
+          :class="[isSubmitting || isValidating ? 'disabled' : 'primary']"
+          :disabled="isSubmitting || isValidating"
+        >
+          Submit
+        </button>
       </div>
     </div>
   </form>

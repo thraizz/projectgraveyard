@@ -11,7 +11,7 @@ const props = defineProps<{
   projectUid: string;
 }>();
 
-const { user } = useUser();
+const userStore = useUser();
 type FormData = {
   comment: string;
 };
@@ -26,12 +26,12 @@ const { handleSubmit } = useForm<FormData>({
 const onSubmit = handleSubmit(
   // Success
   (values: FormData) => {
-    if (!user.value?.uid) return;
+    if (!userStore.user?.uid) return;
     // handle form submission here
     commentStore.addCommentToProject(
       values.comment,
       props.projectUid,
-      user.value.uid,
+      userStore.user.uid,
     );
   },
   // Failure
@@ -45,10 +45,10 @@ const { value: comment, errorMessage: commentError } =
 </script>
 
 <template>
-  <div v-if="user?.uid" class="mt-6 flex gap-x-3">
+  <div v-if="userStore.user?.uid" class="mt-6 flex gap-x-3">
     <img
-      v-if="user?.photoURL && user.photoURL !== ''"
-      :src="user.photoURL"
+      v-if="userStore.user?.photoURL && userStore.user.photoURL !== ''"
+      :src="userStore.user.photoURL"
       alt=""
       class="h-6 w-6 flex-none rounded-full bg-gray-50"
     />

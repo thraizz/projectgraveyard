@@ -6,7 +6,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { signOut, userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
-const { user } = useUser();
+const userStore = useUser();
 
 const appNavigation = [
   {
@@ -101,9 +101,9 @@ const appNavigation = [
         <div class="flex items-center px-5">
           <div class="flex-shrink-0">
             <img
-              v-if="user?.photoURL && user.photoURL !== ''"
+              v-if="userStore.user?.photoURL && userStore.user.photoURL !== ''"
               class="h-8 w-8 rounded-full"
-              :src="user.photoURL"
+              :src="userStore.user.photoURL"
               alt=""
             />
 
@@ -116,11 +116,11 @@ const appNavigation = [
 
           <div class="ml-3">
             <div class="text-base font-medium text-white">
-              {{ user?.displayName }}
+              {{ userStore.user?.displayName }}
             </div>
 
             <div class="text-sm font-medium text-indigo-300">
-              {{ user?.email }}
+              {{ userStore.user?.email }}
             </div>
           </div>
 

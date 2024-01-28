@@ -8,7 +8,7 @@ import { Project } from "@/types";
 defineProps<{
   project: Project;
 }>();
-const { user } = useUser();
+const userStore = useUser();
 const store = useProjectStore();
 </script>
 
@@ -17,18 +17,18 @@ const store = useProjectStore();
     type="button"
     class="z-20 flex h-8 w-16 flex-row items-center justify-between self-center rounded-lg px-2.5 py-0.5 transition-colors transition-shadow hover:shadow-lg"
     :class="[
-      user && project.upvotes.includes(user.uid)
+      userStore.user && project.upvotes.includes(userStore.user.uid)
         ? 'bg-indigo-200'
         : 'bg-indigo-100',
     ]"
-    :disabled="!user || user.isAnonymous"
-    @click="store.upvoteProject(project._id, user?.uid)"
+    :disabled="!userStore.user || userStore.user.isAnonymous"
+    @click="store.upvoteProject(project._id, userStore.user?.uid)"
   >
     <HeartIcon
       class="size-5"
       aria-hidden="true"
       :class="[
-        user && project.upvotes.includes(user.uid)
+        userStore.user && project.upvotes.includes(userStore.user.uid)
           ? 'text-red-500'
           : 'text-gray-500',
       ]"
@@ -37,7 +37,7 @@ const store = useProjectStore();
     <span
       class="text-xs text-indigo-800 transition"
       :class="[
-        user && project.upvotes.includes(user.uid)
+        userStore.user && project.upvotes.includes(userStore.user.uid)
           ? 'font-semibold'
           : 'font-medium',
       ]"

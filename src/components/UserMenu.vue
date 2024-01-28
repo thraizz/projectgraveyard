@@ -3,11 +3,11 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { BellIcon, UserCircleIcon } from "@heroicons/vue/20/solid";
 
 import { signOut, userNavigation, useUser } from "./user";
-const { user, isLoggedIn } = useUser();
+const userStore = useUser();
 </script>
 
 <template>
-  <div v-if="isLoggedIn" class="hidden lg:ml-4 lg:block">
+  <div v-if="userStore.isLoggedIn" class="hidden lg:ml-4 lg:block">
     <div class="flex items-center">
       <button
         type="button"
@@ -31,9 +31,9 @@ const { user, isLoggedIn } = useUser();
             <span class="sr-only">Open user menu</span>
 
             <img
-              v-if="user?.photoURL && user.photoURL !== ''"
+              v-if="userStore.user?.photoURL && userStore.user.photoURL !== ''"
               class="h-8 w-8 rounded-full"
-              :src="user.photoURL"
+              :src="userStore.user.photoURL"
               alt=""
             />
 

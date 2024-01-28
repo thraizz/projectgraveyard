@@ -4,6 +4,7 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
+import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { app } from "@/firebase";
@@ -14,7 +15,7 @@ export const userNavigation = [
 ];
 
 // User firebase to receive current user and autheticaiton status.
-export const useUser = () => {
+export const useUser = defineStore("user", () => {
   const user = ref<User | null>(null);
   const isLoggedIn = ref(false);
 
@@ -28,7 +29,7 @@ export const useUser = () => {
     user,
     isLoggedIn,
   };
-};
+});
 
 export const logInWithFirebase: (
   email: string,
