@@ -35,7 +35,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col p-4 md:flex-row">
+  <div class="flex flex-col p-4 hover:bg-gray-50 md:flex-row">
     <router-link as="li" :to="href" class="project flex w-full min-w-0 gap-x-4">
       <img
         v-if="imgSrc"
@@ -82,6 +82,6 @@ onMounted(async () => {
 
 <style>
 .project {
-  @apply relative flex min-h-40 justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 lg:px-8;
+  @apply relative flex min-h-40 justify-between gap-x-6 px-4 py-5 sm:px-6 lg:px-8;
 }
 </style>

@@ -15,11 +15,14 @@ const store = useProjectStore();
 <template>
   <button
     type="button"
-    class="z-20 flex h-8 w-16 flex-row items-center justify-between self-center rounded-lg px-2.5 py-0.5 transition-colors transition-shadow hover:shadow-lg"
+    class="z-20 flex h-8 w-16 flex-row items-center justify-between self-center rounded-lg px-2.5 py-0.5 transition-colors transition-shadow"
     :class="[
       userStore.user && project.upvotes.includes(userStore.user.uid)
         ? 'bg-indigo-200'
         : 'bg-indigo-100',
+      userStore.isLoggedIn && !userStore.user?.isAnonymous
+        ? 'hover:shadow-lg'
+        : '',
     ]"
     :disabled="!userStore.user || userStore.user.isAnonymous"
     @click="store.upvoteProject(project._id, userStore.user?.uid)"
