@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest --bail 0 --run"
+    "test": "vitest --bail 0 --run",
+    "lint": "eslint --ext .js,.ts,.vue . && prettier --check .",
+    "format": "prettier --write .",
+    "type-check": "vue-tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.17",
@@ -16,6 +20,7 @@
     "axios": "^1.6.5",
     "cssnano": "^6.0.3",
     "firebase": "^10.7.2",
+    "husky": "^9.0.6",
     "pinia": "^2.1.7",
     "vee-validate": "^4.12.4",
     "vue": "^3.3.11",
