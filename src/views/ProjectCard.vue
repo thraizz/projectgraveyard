@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+} from "firebase/storage";
+import { computed, onMounted, ref } from "vue";
 
 import { Project } from "@/types";
 
@@ -10,15 +15,32 @@ const props = defineProps<{
 }>();
 
 const href = computed(() => `/projects/${props.project.projectId}`);
+
+const imgSrc = ref<string | undefined>(undefined);
+
+onMounted(async () => {
+  const storage = getStorage();
+  const pathReference = storageRef(
+    storage,
+    `/projects/${props.project._id}/logo.png`,
+  );
+  getDownloadURL(pathReference)
+    .then((url) => {
+      imgSrc.value = url;
+    })
+    .catch(() => {
+      imgSrc.value = undefined;
+    });
+});
 </script>
 
 <template>
   <li class="project">
     <router-link as="li" :to="href" class="flex w-full min-w-0 gap-x-4">
       <img
-        v-if="project.logo"
+        v-if="imgSrc"
         class="h-12 w-12 flex-none rounded-full bg-gray-50"
-        :src="project.logo"
+        :src="imgSrc"
         alt=""
       />
 

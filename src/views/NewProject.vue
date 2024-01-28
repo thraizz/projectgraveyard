@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import { useField, useForm } from "vee-validate";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { string } from "yup";
 
@@ -8,11 +10,14 @@ import { useProjectStore } from "@/projects";
 
 export type ProjectCreationFormData = {
   title: string;
+  file: File;
   description: string;
   content: string;
   links: string;
   tags: string;
 };
+
+const storage = getStorage();
 
 const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
   validationSchema: {
@@ -38,7 +43,7 @@ const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
         });
       },
     ),
-    tags: string().required("The tags are required."),
+    tags: string().required("Some tags are required."),
   },
   initialValues: {
     title: "",
@@ -49,18 +54,64 @@ const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
   },
 });
 
+const logo = ref<File | null>(null);
+const screenshots = ref<File[] | null>(null);
+
+const handleLogoUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+
+  if (!files) return;
+
+  logo.value = files[0];
+};
+const uploadLogo = async (uuid: string) => {
+  if (!logo.value) return;
+
+  const uploadRef = storageRef(storage, `projects/${uuid}/logo.png`);
+  await uploadBytes(uploadRef, logo.value);
+};
+
+const handleScreenshotUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+
+  if (!files) return;
+
+  screenshots.value = Array.from(files);
+};
+
+const uploadScreenshots = async () => {
+  if (!screenshots.value) return;
+
+  await Promise.all(
+    screenshots.value.map(async (screenshot, index) => {
+      const uploadRef = storageRef(
+        storage,
+        `projects/8uFvujhBpyl7ef7bi8I2/screenshots/${index}.png`,
+      );
+      await uploadBytes(uploadRef, screenshot);
+    }),
+  );
+};
+
 const router = useRouter();
 const projectStore = useProjectStore();
 const { user } = useUser();
+
 const onSubmit = handleSubmit(
   // Success
-  (values: ProjectCreationFormData) => {
+  async (values: ProjectCreationFormData) => {
     if (!user.value) return;
 
     // handle form submission here
-    projectStore.addProject(values, user.value.uid);
-    resetForm();
-    router.push("/");
+    projectStore.addProject(values, user.value.uid).then(async (uid) => {
+      await uploadLogo(uid);
+      await uploadScreenshots();
+
+      resetForm();
+      router.push("/");
+    });
   },
   // Failure
   (errors) => {
@@ -213,6 +264,55 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
 
               <p class="error">{{ tagsError }}</p>
             </div>
+          </div>
+
+          <!-- Single logo upload -->
+          <div
+            class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5"
+          >
+            <label
+              for="logo"
+              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            >
+              Logo <span class="text-xs text-gray-400">(recommended)</span>
+            </label>
+
+            <div class="mt-1 sm:col-span-2 sm:mt-0">
+              <input
+                class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                type="file"
+                @change="handleLogoUpload"
+              />
+            </div>
+          </div>
+
+          <!-- Screenshot upload section using firebase storage -->
+          <div
+            class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5"
+          >
+            <label
+              for="screenshots"
+              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            >
+              Screenshots <span class="text-xs text-gray-400">(optional)</span>
+            </label>
+
+            <div class="mt-1 sm:col-span-2 sm:mt-0">
+              <input
+                id="screenshots"
+                multiple
+                name="screensthots"
+                type="file"
+                class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                @change="handleScreenshotUpload"
+              />
+            </div>
+
+            <p class="mt-2 text-sm text-gray-500">PNG, JPG, WEBP up to 10MB</p>
+
+            <p class="mt-2 text-sm text-gray-500">
+              We'll automatically resize it to 300x300 pixels.
+            </p>
           </div>
         </div>
       </div>

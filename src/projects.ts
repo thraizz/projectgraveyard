@@ -61,7 +61,8 @@ export const useProjectStore = defineStore("projects", () => {
 
   function addProject(values: ProjectCreationFormData, userUid: string) {
     const projectCollection = collection(firestore, "projects");
-    addDoc(projectCollection, {
+
+    return addDoc(projectCollection, {
       title: values.title,
       description: values.description,
       textContent: values.content,
@@ -74,11 +75,15 @@ export const useProjectStore = defineStore("projects", () => {
       createdAt: new Date(),
       logo: "",
     })
-      .then(() => {
+      .then((data) => {
         refetch();
+
+        return Promise.resolve(data.id);
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
+
+        return Promise.reject();
       });
   }
 
