@@ -66,8 +66,14 @@ export const useProjectStore = defineStore("projects", () => {
       title: values.title,
       description: values.description,
       textContent: values.content,
-      links: values.links.split(",").map((tag) => tag.trim()),
-      tags: values.tags.split(",").map((tag) => tag.trim()),
+      links: values.links
+        .split(",")
+        .map((link) => link.trim())
+        .filter((link) => link !== ""),
+      tags: values.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== ""),
       projectId: "",
       userId: userUid,
       images: [],
