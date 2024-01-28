@@ -14,7 +14,7 @@ const props = defineProps<{
   project: Project;
 }>();
 
-const href = computed(() => `/projects/${props.project.projectId}`);
+const href = computed(() => `/projects/${props.project._id}`);
 
 const imgSrc = ref<string | undefined>(undefined);
 

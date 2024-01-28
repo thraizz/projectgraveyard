@@ -7,6 +7,17 @@ import { signOut, userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
 const { user } = useUser();
+
+const appNavigation = [
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "Bury Project",
+    href: "/projects/new",
+  },
+];
 </script>
 
 <template>
@@ -75,6 +86,17 @@ const { user } = useUser();
     </div>
 
     <DisclosurePanel class="lg:hidden">
+      <div class="space-y-1 px-2 pb-3 pt-2">
+        <router-link
+          v-for="item in appNavigation"
+          :key="item.name"
+          as="a"
+          :to="item.href"
+          class="navigation-item"
+          >{{ item.name }}</router-link
+        >
+      </div>
+
       <div class="border-t border-indigo-700 pb-3 pt-4">
         <div class="flex items-center px-5">
           <div class="flex-shrink-0">
@@ -120,7 +142,7 @@ const { user } = useUser();
             :key="item.name"
             as="a"
             :href="item.href"
-            class="navigation-item"
+            class="navigation-item light"
             >{{ item.name }}</DisclosureButton
           >
 
@@ -135,9 +157,9 @@ const { user } = useUser();
   </Disclosure>
 </template>
 
-<style>
+<style lang="scss">
 .navigation-item {
-  @apply block rounded-md px-3 py-2 text-base font-light text-white hover:bg-indigo-500 hover:bg-opacity-75;
+  @apply block rounded-md px-3 py-2 text-base text-white hover:bg-indigo-500 hover:bg-opacity-75;
 }
 .search-input {
   @apply block h-fit w-0 rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:w-full focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 sm:text-sm sm:leading-6 lg:w-full;

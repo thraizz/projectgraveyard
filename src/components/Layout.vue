@@ -27,6 +27,7 @@ import TopBar from "@/components/TopBar.vue";
         </div>
 
         <router-link
+          v-if="$route.path !== '/projects/new'"
           to="/projects/new"
           class="button secondary hidden h-min w-min lg:flex"
         >

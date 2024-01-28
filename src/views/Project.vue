@@ -5,20 +5,25 @@ import { useRoute } from "vue-router";
 import { useProjectStore } from "@/projects";
 
 import Comments from "./Comments.vue";
+import UpvoteButton from "./UpvoteButton.vue";
 
 const store = useProjectStore();
 const route = useRoute();
 
 const project = computed(() =>
-  store.projects.find((project) => project.projectId === route.params.id),
+  store.projects.find((project) => project._id === route.params.id),
 );
 </script>
 
 <template>
   <div class="px-4 py-5 sm:px-6">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-      {{ project?.title }}
-    </h1>
+    <div class="flex flex-row items-center justify-between">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+        {{ project?.title }}
+      </h1>
+
+      <UpvoteButton v-if="project" :project="project" />
+    </div>
 
     <p class="mt-1 text-sm text-gray-500">
       {{ project?.description }}
