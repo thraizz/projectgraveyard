@@ -279,11 +279,17 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
 
             <div class="mt-1 sm:col-span-2 sm:mt-0">
               <input
-                class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="block w-full max-w-lg focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 type="file"
                 @change="handleLogoUpload"
               />
             </div>
+
+            <div />
+
+            <p class="mt-2 text-sm text-gray-500">
+              We'll automatically resize it to 300x300 pixels.
+            </p>
           </div>
 
           <!-- Screenshot upload section using firebase storage -->
@@ -303,16 +309,10 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
                 multiple
                 name="screensthots"
                 type="file"
-                class="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                class="block w-full max-w-lg rounded-md focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 @change="handleScreenshotUpload"
               />
             </div>
-
-            <p class="mt-2 text-sm text-gray-500">PNG, JPG, WEBP up to 10MB</p>
-
-            <p class="mt-2 text-sm text-gray-500">
-              We'll automatically resize it to 300x300 pixels.
-            </p>
           </div>
         </div>
       </div>
