@@ -23,21 +23,11 @@ const activity = computed(() =>
       :key="comment._id"
       class="relative flex gap-x-4"
     >
-      <div
-        :class="[
-          activityItemIdx === activity.length - 1 ? 'h-6' : '-bottom-6',
-          'absolute left-0 top-0 flex w-6 justify-center',
-        ]"
-      >
-        <div class="w-px bg-gray-200" />
-      </div>
-
-      <div class="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50" />
-      <!-- <img
-        :src="comment.person.imageUrl"
+      <img
+        :src="comment.userId"
         alt=""
         class="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50"
-      /> -->
+      />
 
       <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
         <div class="flex justify-between gap-x-4">

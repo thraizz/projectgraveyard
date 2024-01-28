@@ -66,7 +66,7 @@ const handleLogoUpload = (event: Event) => {
   logo.value = files[0];
 };
 const uploadLogo = async (uuid: string) => {
-  if (!logo.value) return;
+  if (!logo.value || !uuid) return;
 
   const uploadRef = storageRef(storage, `projects/${uuid}/logo.png`);
   await uploadBytes(uploadRef, logo.value);
@@ -81,14 +81,14 @@ const handleScreenshotUpload = (event: Event) => {
   screenshots.value = Array.from(files);
 };
 
-const uploadScreenshots = async () => {
-  if (!screenshots.value) return;
+const uploadScreenshots = async (uuid: string) => {
+  if (!screenshots.value || !uuid) return;
 
   await Promise.all(
     screenshots.value.map(async (screenshot, index) => {
       const uploadRef = storageRef(
         storage,
-        `projects/8uFvujhBpyl7ef7bi8I2/screenshots/${index}.png`,
+        `projects/${uuid}/screenshots/${index}.png`,
       );
       await uploadBytes(uploadRef, screenshot);
     }),
@@ -107,7 +107,7 @@ const onSubmit = handleSubmit(
     // handle form submission here
     projectStore.addProject(values, user.value.uid).then(async (uid) => {
       await uploadLogo(uid);
-      await uploadScreenshots();
+      await uploadScreenshots(uid);
 
       resetForm();
       router.push("/");

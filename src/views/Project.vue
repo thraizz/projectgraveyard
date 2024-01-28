@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import {
+  getDownloadURL,
+  getStorage,
+  listAll,
+  ref as storageRef,
+} from "firebase/storage";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
+import Screenshots from "@/components/Screenshots.vue";
 import { useProjectStore } from "@/projects";
 
 import Comments from "./Comments.vue";
@@ -13,6 +20,35 @@ const route = useRoute();
 const project = computed(() =>
   store.projects.find((project) => project._id === route.params.id),
 );
+
+const storage = getStorage();
+
+const images = ref<string[]>([]);
+
+onMounted(() => {
+  console.log("path", `projects/${project.value?._id}/screenshots`);
+  // Create a reference under which you want to list
+  const listRef = storageRef(
+    storage,
+    `projects/${project.value?._id}/screenshots`,
+  );
+  console.log(listRef);
+
+  // Find all the prefixes and items.
+  listAll(listRef)
+    .then((res) => {
+      res.items.forEach((itemRef) => {
+        console.log("itemRef", itemRef);
+        getDownloadURL(itemRef).then((url) => {
+          console.log("url", url);
+          images.value.push(url);
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 </script>
 
 <template>
@@ -24,6 +60,8 @@ const project = computed(() =>
 
       <UpvoteButton v-if="project" :project="project" />
     </div>
+
+    <Screenshots :images="images" />
 
     <p class="mt-1 text-sm text-gray-500">
       {{ project?.description }}
@@ -58,7 +96,9 @@ const project = computed(() =>
               :key="link"
               class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
             >
-              {{ link }}
+              <a :href="link" class="text-indigo-600 hover:text-indigo-500">{{
+                link
+              }}</a>
             </li>
           </ul>
         </dd>
