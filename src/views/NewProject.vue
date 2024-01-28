@@ -19,42 +19,41 @@ export type ProjectCreationFormData = {
 
 const storage = getStorage();
 
-const isSubmitting = true;
-const isValidating = true;
-const { handleSubmit, resetForm } = useForm<ProjectCreationFormData>({
-  validationSchema: {
-    title: string().required("The title is required."),
-    description: string().required("The description is required."),
-    content: string().required("The content is required."),
-    links: string().test(
-      "links",
-      "The links must be a comma-separated list of links.",
-      (value) => {
-        if (!value) return true;
+const { handleSubmit, resetForm, isSubmitting, isValidating } =
+  useForm<ProjectCreationFormData>({
+    validationSchema: {
+      title: string().required("The title is required."),
+      description: string().required("The description is required."),
+      content: string().required("The content is required."),
+      links: string().test(
+        "links",
+        "The links must be a comma-separated list of links.",
+        (value) => {
+          if (!value) return true;
 
-        const links = value.split(",").map((link) => link.trim());
+          const links = value.split(",").map((link) => link.trim());
 
-        return links.every((link) => {
-          try {
-            new URL(link);
+          return links.every((link) => {
+            try {
+              new URL(link);
 
-            return true;
-          } catch {
-            return false;
-          }
-        });
-      },
-    ),
-    tags: string().required("Some tags are required."),
-  },
-  initialValues: {
-    title: "",
-    description: "",
-    content: "",
-    links: "",
-    tags: "",
-  },
-});
+              return true;
+            } catch {
+              return false;
+            }
+          });
+        },
+      ),
+      tags: string().required("Some tags are required."),
+    },
+    initialValues: {
+      title: "",
+      description: "",
+      content: "",
+      links: "",
+      tags: "",
+    },
+  });
 
 const logo = ref<File | null>(null);
 const screenshots = ref<File[] | null>(null);
@@ -143,7 +142,6 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
 </script>
 
 <template>
-  {{ userStore.isLoggedIn }}
   <form class="space-y-8 divide-y divide-gray-200" @submit="onSubmit">
     <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
       <div>
@@ -345,10 +343,36 @@ const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
 
         <button
           type="submit"
-          class="button min-w-20"
-          :class="[isSubmitting || isValidating ? 'disabled' : 'primary']"
+          class="button primary min-w-20 gap-2"
           :disabled="isSubmitting || isValidating"
         >
+          <!-- Loading spinner  -->
+          <div
+            v-if="isSubmitting || isValidating"
+            class="flex items-center justify-center"
+          >
+            <svg
+              class="size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+          </div>
           Submit
         </button>
       </div>
