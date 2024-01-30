@@ -50,7 +50,16 @@ Welcome to the Project Graveyard, a platform where developers can showcase their
    npm run dev
    ```
 
-5. **Visit the Application:**
+5. **Start the firebase emulators:**
+
+   ```bash
+   npm run emulators
+   ```
+
+   This will start the Firebase emulators for Authentication, Firestore, and Functions. The data will contain some demo projects/users/comments.
+   It also contains a user with the email `test@example.com` and the password `Test123!` for testing purposes.
+
+6. **Visit the Application:**
    Open your browser and navigate to `http://localhost:5173`.
 
 ## Contributing
