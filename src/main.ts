@@ -5,6 +5,7 @@ import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 import App from "./App.vue";
+import { useUser } from "./components/user";
 import HomeVue from "./views/Home.vue";
 
 const app = createApp(App);
@@ -52,5 +53,14 @@ const router = createRouter({
     },
   ],
 });
+router.beforeEach((to, from, next) => {
+  const { isLoggedIn } = useUser();
+  if (to.path == "/projects/new" && !isLoggedIn) {
+    next("/login");
+  } else {
+    next();
+  }
+});
+
 const pinia = createPinia();
 app.use(router).use(pinia).mount("#app");
