@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/vue/20/solid";
+import { UserCircleIcon } from "@heroicons/vue/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
+import SearchBar from "./SearchBar.vue";
 import { signOut, userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
@@ -31,35 +32,15 @@ const appNavigation = [
         class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25"
       >
         <router-link to="/" class="flex items-center gap-2 px-2 lg:px-0">
-          <div class="flex-shrink-0">
-            <img class="block h-8 w-8" src="/icon.svg" alt="Your Company" />
-          </div>
-
-          <span class="font-sans text-xl font-bold text-white">
-            Project Graveyard
-          </span>
+          <img
+            src="/logowithtext.svg"
+            class="max-w-52"
+            alt="repository.rip Logo"
+          />
         </router-link>
 
         <div class="flex flex-row items-center gap-4">
-          <div class="flex w-full max-w-52 flex-1 justify-start px-2 lg:ml-6">
-            <label for="search" class="sr-only">Search</label>
-
-            <div class="relative text-gray-400 focus-within:text-gray-600">
-              <div
-                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-              >
-                <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-              </div>
-
-              <input
-                id="search"
-                class="search-input"
-                placeholder="Search"
-                type="search"
-                name="search"
-              />
-            </div>
-          </div>
+          <SearchBar class="hidden lg:flex" />
 
           <UserMenu />
 
@@ -95,6 +76,8 @@ const appNavigation = [
           class="navigation-item"
           >{{ item.name }}</router-link
         >
+
+        <SearchBar />
       </div>
 
       <div class="border-t border-indigo-700 pb-3 pt-4">
