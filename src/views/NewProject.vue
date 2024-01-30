@@ -5,6 +5,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { string } from "yup";
 
+import FormSubmitSpinner from "@/components/FormSubmitSpinner.vue";
 import { useUser } from "@/components/user";
 import { useProjectStore } from "@/projects";
 
@@ -105,17 +106,27 @@ const onSubmit = handleSubmit(
   async (values: ProjectCreationFormData) => {
     if (!userStore.user) return;
 
-    // handle form submission here
-    projectStore.addProject(values, userStore.user.uid).then(async (uid) => {
-      await uploadLogo(uid);
-      await uploadScreenshots(uid);
+    showLoadingSpinner.value = true;
 
-      resetForm();
-      router.push("/");
-    });
+    // handle form submission here
+    projectStore
+      .addProject(values, userStore.user.uid)
+      .then(async (uid) => {
+        await uploadLogo(uid);
+        await uploadScreenshots(uid);
+
+        resetForm();
+        showLoadingSpinner.value = false;
+        router.push("/");
+      })
+      .catch((error) => {
+        showLoadingSpinner.value = false;
+        console.log(error);
+      });
   },
   // Failure
   (errors) => {
+    showLoadingSpinner.value = false;
     console.log(errors);
   },
 );
@@ -127,9 +138,13 @@ const { value: content, errorMessage: contentError } =
   useField<string>("content");
 const { value: links, errorMessage: linksError } = useField<string[]>("links");
 const { value: tags, errorMessage: tagsError } = useField<string[]>("tags");
+
+const showLoadingSpinner = ref(false);
 </script>
 
 <template>
+  <FormSubmitSpinner :show="showLoadingSpinner" />
+
   <form class="space-y-8 divide-y divide-gray-200" @submit="onSubmit">
     <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
       <div>
