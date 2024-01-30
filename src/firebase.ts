@@ -2,8 +2,9 @@
 
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -25,3 +26,10 @@ export const analytics = getAnalytics(app);
 export const firestore = getFirestore(app);
 
 export const auth = getAuth(app);
+
+export const functions = getFunctions(app);
+if (import.meta.env.DEV) {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFunctionsEmulator(functions, "localhost", 5001);
+  connectFirestoreEmulator(firestore, "localhost", 8080);
+}
