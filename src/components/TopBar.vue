@@ -3,7 +3,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { UserCircleIcon } from "@heroicons/vue/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
-import SearchBar from "./SearchBar.vue";
 import { signOut, userNavigation, useUser } from "./user";
 import UserMenu from "./UserMenu.vue";
 
@@ -40,7 +39,7 @@ const appNavigation = [
         </router-link>
 
         <div class="flex flex-row items-center gap-4">
-          <SearchBar class="hidden lg:flex" />
+          <!-- <SearchBar class="hidden lg:flex" /> -->
 
           <UserMenu />
 
@@ -77,7 +76,7 @@ const appNavigation = [
           >{{ item.name }}</router-link
         >
 
-        <SearchBar />
+        <!-- <SearchBar /> -->
       </div>
 
       <div class="border-t border-indigo-700 pb-3 pt-4">
