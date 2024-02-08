@@ -18,13 +18,15 @@ const router = useRouter();
 const signIn = async () => {
   const provider = new GoogleAuthProvider();
   await setPersistence(auth, browserLocalPersistence);
-  signInWithPopup(auth, provider).catch(async (e) => {
-    if (typeof e === "object" && errorHasCode(e)) {
-      if (e.code === "auth/popup-blocked") {
-        await signInWithRedirect(auth, provider).then(() => router.push("/"));
+  signInWithPopup(auth, provider)
+    .then(() => router.push("/"))
+    .catch(async (e) => {
+      if (typeof e === "object" && errorHasCode(e)) {
+        if (e.code === "auth/popup-blocked") {
+          await signInWithRedirect(auth, provider).then(() => router.push("/"));
+        }
       }
-    }
-  });
+    });
 };
 </script>
 
