@@ -9,7 +9,7 @@ import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  authDomain: "repository.io",
   projectId: "oldprojectshowcaser",
   storageBucket: "oldprojectshowcaser.appspot.com",
   messagingSenderId: "236463367771",
